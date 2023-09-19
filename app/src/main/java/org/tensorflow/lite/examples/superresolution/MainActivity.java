@@ -176,19 +176,19 @@ public class MainActivity extends AppCompatActivity {
             if (v.equals(lowResImageView1)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView1.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 1 ("
+                  "You are using low resolution image: 4 ("
                       + getResources().getString(R.string.low_resolution_1)
                       + ")");
             } else if (v.equals(lowResImageView2)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView2.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 2 ("
+                  "You are using low resolution image: 5 ("
                       + getResources().getString(R.string.low_resolution_2)
                       + ")");
             } else if (v.equals(lowResImageView3)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView3.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 3 ("
+                  "You are using low resolution image: 6 ("
                       + getResources().getString(R.string.low_resolution_3)
                       + ")");
             }
