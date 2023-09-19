@@ -3,7 +3,6 @@
 The task of recovering a high resolution (HR) image from its low resolution
 counterpart is commonly referred to as Single Image Super Resolution (SISR).
 
-
 The model used here is ESRGAN
 ([ESRGAN: Enhanced Super-Resolution Generative Adversarial Networks](https://arxiv.org/abs/1809.00219)).
 The TFLite model is converted from this
