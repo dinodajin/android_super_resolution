@@ -1,0 +1,65 @@
+{
+  "buildFiles": [
+    "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake",
+      "--build",
+      "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a",
+      "--target",
+      "clean"
+    ]
+  ],
+  "libraries": {
+    "SuperResolution-Debug-arm64-v8a": {
+      "buildCommandComponents": [
+        "/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake",
+        "--build",
+        "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a",
+        "--target",
+        "SuperResolution"
+      ],
+      "buildType": "debug",
+      "toolchain": "9977638749521266926",
+      "abi": "arm64-v8a",
+      "artifactName": "SuperResolution",
+      "files": [
+        {
+          "src": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/SuperResolution_jni.cpp",
+          "flags": "  --target=aarch64-none-linux-android21 --gcc-toolchain=/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -DSuperResolution_EXPORTS -I/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite/headers -I/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite-gpu/headers  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=gnu++14 -O0 -fno-limit-debug-info  -fPIC   -std=gnu++14  -c ",
+          "workingDirectory": "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a"
+        },
+        {
+          "src": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/SuperResolution.cpp",
+          "flags": "  --target=aarch64-none-linux-android21 --gcc-toolchain=/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -DSuperResolution_EXPORTS -I/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite/headers -I/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite-gpu/headers  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -std=gnu++14 -O0 -fno-limit-debug-info  -fPIC   -std=gnu++14  -c ",
+          "workingDirectory": "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a"
+        }
+      ],
+      "output": "/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a/libSuperResolution.so"
+    },
+    "lib_tensorflowlite-Debug-arm64-v8a": {
+      "buildType": "debug",
+      "toolchain": "9977638749521266926",
+      "abi": "arm64-v8a",
+      "artifactName": "lib_tensorflowlite",
+      "output": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite/jni/arm64-v8a/libtensorflowlite_jni.so"
+    },
+    "lib_tensorflowlite_gpu-Debug-arm64-v8a": {
+      "buildType": "debug",
+      "toolchain": "9977638749521266926",
+      "abi": "arm64-v8a",
+      "artifactName": "lib_tensorflowlite_gpu",
+      "output": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite-gpu/jni/arm64-v8a/libtensorflowlite_gpu_jni.so"
+    }
+  },
+  "toolchains": {
+    "9977638749521266926": {
+      "cCompilerExecutable": "/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+      "cppCompilerExecutable": "/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

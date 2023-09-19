@@ -1,0 +1,41 @@
+{
+  "buildFiles": [
+    "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake",
+      "--build",
+      "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a",
+      "--target",
+      "clean"
+    ]
+  ],
+  "libraries": {
+    "lib_tensorflowlite_gpu-Debug-arm64-v8a": {
+      "artifactName": "lib_tensorflowlite_gpu",
+      "abi": "arm64-v8a",
+      "output": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite-gpu/jni/arm64-v8a/libtensorflowlite_gpu_jni.so",
+      "runtimeFiles": []
+    },
+    "SuperResolution-Debug-arm64-v8a": {
+      "artifactName": "SuperResolution",
+      "buildCommandComponents": [
+        "/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake",
+        "--build",
+        "/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a",
+        "--target",
+        "SuperResolution"
+      ],
+      "abi": "arm64-v8a",
+      "output": "/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a/libSuperResolution.so",
+      "runtimeFiles": []
+    },
+    "lib_tensorflowlite-Debug-arm64-v8a": {
+      "artifactName": "lib_tensorflowlite",
+      "abi": "arm64-v8a",
+      "output": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/../../../../libraries/tensorflowlite/jni/arm64-v8a/libtensorflowlite_jni.so",
+      "runtimeFiles": []
+    }
+  }
+}
