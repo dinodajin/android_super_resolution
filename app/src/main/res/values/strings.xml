@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">TFL Super Resolution</string>
     <string name="choose_image" translatable="false">Choose a low resolution image below:</string>
+    <string name="add_image" translatable="false">+</string>
     <string name="low_resolution_1" translatable="false">insect head</string>
     <string name="low_resolution_2" translatable="false">lights 1</string>
     <string name="low_resolution_3" translatable="false">cat ear</string>
