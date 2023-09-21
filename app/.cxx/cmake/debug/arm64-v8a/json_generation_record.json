@@ -8,63 +8,7 @@
   },
   {
     "level": "INFO",
-    "message": "rebuilding JSON /Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build.json due to:",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "- expected json /Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build.json file is not present, will remove stale json folder",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "- missing previous command file /Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a/build_command.txt, will remove stale json folder",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "- command changed from previous, will remove stale json folder",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "created folder \u0027/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a\u0027",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "executing cmake Executable : /Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake\narguments : \n-H/Users/dajineyland/github/android_super_resolution/app/src/main/cc\n-DCMAKE_FIND_ROOT_PATH\u003d/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/prefab/arm64-v8a/prefab\n-DCMAKE_BUILD_TYPE\u003dDebug\n-DCMAKE_TOOLCHAIN_FILE\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake\n-DANDROID_ABI\u003darm64-v8a\n-DANDROID_NDK\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_ANDROID_ARCH_ABI\u003darm64-v8a\n-DCMAKE_ANDROID_NDK\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a\n-DCMAKE_MAKE_PROGRAM\u003d/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/ninja\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_SYSTEM_VERSION\u003d21\n-DANDROID_STL\u003dc++_shared\n-B/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a\n-GNinja\njvmArgs : \n\n",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "Executable : /Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/cmake\narguments : \n-H/Users/dajineyland/github/android_super_resolution/app/src/main/cc\n-DCMAKE_FIND_ROOT_PATH\u003d/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/prefab/arm64-v8a/prefab\n-DCMAKE_BUILD_TYPE\u003dDebug\n-DCMAKE_TOOLCHAIN_FILE\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake\n-DANDROID_ABI\u003darm64-v8a\n-DANDROID_NDK\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529\n-DANDROID_PLATFORM\u003dandroid-21\n-DCMAKE_ANDROID_ARCH_ABI\u003darm64-v8a\n-DCMAKE_ANDROID_NDK\u003d/Users/dajineyland/Library/Android/sdk/ndk/21.4.7075529\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/Users/dajineyland/github/android_super_resolution/app/build/intermediates/cmake/debug/obj/arm64-v8a\n-DCMAKE_MAKE_PROGRAM\u003d/Users/dajineyland/Library/Android/sdk/cmake/3.6.4111459/bin/ninja\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_SYSTEM_VERSION\u003d21\n-DANDROID_STL\u003dc++_shared\n-B/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a\n-GNinja\njvmArgs : \n\n",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "done executing cmake",
-    "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
-    "tag": "debug|arm64-v8a",
-    "diagnosticCode": "UNKNOWN"
-  },
-  {
-    "level": "INFO",
-    "message": "write command file /Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a/build_command.txt",
+    "message": "JSON \u0027/Users/dajineyland/github/android_super_resolution/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build.json\u0027 was up-to-date",
     "file": "/Users/dajineyland/github/android_super_resolution/app/src/main/cc/CMakeLists.txt",
     "tag": "debug|arm64-v8a",
     "diagnosticCode": "UNKNOWN"

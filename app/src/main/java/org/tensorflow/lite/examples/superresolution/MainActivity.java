@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
   private static final int UPSCALE_FACTOR = 4;
   private static final int SR_IMAGE_HEIGHT = LR_IMAGE_HEIGHT * UPSCALE_FACTOR;
   private static final int SR_IMAGE_WIDTH = LR_IMAGE_WIDTH * UPSCALE_FACTOR;
-  private static final String LR_IMG_1 = "lr-1.jpg";
-  private static final String LR_IMG_2 = "lr-2.jpg";
-  private static final String LR_IMG_3 = "lr-3.jpg";
+  private static final String LR_IMG_1 = "lr-4.png";
+  private static final String LR_IMG_2 = "lr-5.png";
+  private static final String LR_IMG_3 = "lr-6.png";
 
   private MappedByteBuffer model;
   private long superResolutionNativeHandle = 0;
@@ -176,19 +176,19 @@ public class MainActivity extends AppCompatActivity {
             if (v.equals(lowResImageView1)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView1.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 1 ("
+                  "You are using low resolution image: 4 ("
                       + getResources().getString(R.string.low_resolution_1)
                       + ")");
             } else if (v.equals(lowResImageView2)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView2.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 2 ("
+                  "You are using low resolution image: 5 ("
                       + getResources().getString(R.string.low_resolution_2)
                       + ")");
             } else if (v.equals(lowResImageView3)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView3.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 3 ("
+                  "You are using low resolution image: 6 ("
                       + getResources().getString(R.string.low_resolution_3)
                       + ")");
             }
