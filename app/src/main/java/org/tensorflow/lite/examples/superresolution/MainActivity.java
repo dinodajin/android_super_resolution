@@ -53,9 +53,12 @@ public class MainActivity extends AppCompatActivity {
   private static final int UPSCALE_FACTOR = 4;
   private static final int SR_IMAGE_HEIGHT = LR_IMAGE_HEIGHT * UPSCALE_FACTOR;
   private static final int SR_IMAGE_WIDTH = LR_IMAGE_WIDTH * UPSCALE_FACTOR;
-  private static final String LR_IMG_1 = "lr-4.png";
-  private static final String LR_IMG_2 = "lr-5.png";
-  private static final String LR_IMG_3 = "lr-6.png";
+  private static final String LR_IMG_1 = "lr-1.jpg";
+  private static final String LR_IMG_2 = "lr-2.jpg";
+  private static final String LR_IMG_3 = "lr-3.jpg";
+  private static final String LR_IMG_4 = "lr-4.png";
+  private static final String LR_IMG_5 = "lr-5.png";
+  private static final String LR_IMG_6 = "lr-6.png";
 
   private MappedByteBuffer model;
   private long superResolutionNativeHandle = 0;
@@ -65,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
   private ImageView lowResImageView1;
   private ImageView lowResImageView2;
   private ImageView lowResImageView3;
+  private ImageView lowResImageView4;
+  private ImageView lowResImageView5;
+  private ImageView lowResImageView6;
   private TextView selectedImageTextView;
   private Switch gpuSwitch;
 
@@ -77,10 +83,13 @@ public class MainActivity extends AppCompatActivity {
     lowResImageView1 = findViewById(R.id.low_resolution_image_1);
     lowResImageView2 = findViewById(R.id.low_resolution_image_2);
     lowResImageView3 = findViewById(R.id.low_resolution_image_3);
+    lowResImageView4 = findViewById(R.id.low_resolution_image_4);
+    lowResImageView5 = findViewById(R.id.low_resolution_image_5);
+    lowResImageView6 = findViewById(R.id.low_resolution_image_6);
     selectedImageTextView = findViewById(R.id.chosen_image_tv);
     gpuSwitch = findViewById(R.id.switch_use_gpu);
 
-    ImageView[] lowResImageViews = {lowResImageView1, lowResImageView2, lowResImageView3};
+    ImageView[] lowResImageViews = {lowResImageView1, lowResImageView2, lowResImageView3, lowResImageView4, lowResImageView5, lowResImageView6};
 
     AssetManager assetManager = getAssets();
     try {
@@ -95,6 +104,18 @@ public class MainActivity extends AppCompatActivity {
       InputStream inputStream3 = assetManager.open(LR_IMG_3);
       Bitmap bitmap3 = BitmapFactory.decodeStream(inputStream3);
       lowResImageView3.setImageBitmap(bitmap3);
+
+      InputStream inputStream4 = assetManager.open(LR_IMG_4);
+      Bitmap bitmap4 = BitmapFactory.decodeStream(inputStream4);
+      lowResImageView4.setImageBitmap(bitmap4);
+
+      InputStream inputStream5 = assetManager.open(LR_IMG_5);
+      Bitmap bitmap5 = BitmapFactory.decodeStream(inputStream5);
+      lowResImageView5.setImageBitmap(bitmap5);
+
+      InputStream inputStream6 = assetManager.open(LR_IMG_6);
+      Bitmap bitmap6 = BitmapFactory.decodeStream(inputStream6);
+      lowResImageView6.setImageBitmap(bitmap6);
     } catch (IOException e) {
       Log.e(TAG, "Failed to open an low resolution image");
     }
@@ -176,20 +197,38 @@ public class MainActivity extends AppCompatActivity {
             if (v.equals(lowResImageView1)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView1.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 4 ("
+                  "You are using low resolution image: 1 ("
                       + getResources().getString(R.string.low_resolution_1)
                       + ")");
             } else if (v.equals(lowResImageView2)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView2.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 5 ("
+                  "You are using low resolution image: 2 ("
                       + getResources().getString(R.string.low_resolution_2)
                       + ")");
             } else if (v.equals(lowResImageView3)) {
               selectedLRBitmap = ((BitmapDrawable) lowResImageView3.getDrawable()).getBitmap();
               selectedImageTextView.setText(
-                  "You are using low resolution image: 6 ("
+                  "You are using low resolution image: 3 ("
                       + getResources().getString(R.string.low_resolution_3)
+                      + ")");
+            } else if (v.equals(lowResImageView4)) {
+              selectedLRBitmap = ((BitmapDrawable) lowResImageView4.getDrawable()).getBitmap();
+              selectedImageTextView.setText(
+                  "You are using low resolution image: 4 ("
+                      + getResources().getString(R.string.low_resolution_4)
+                      + ")");
+            } else if (v.equals(lowResImageView5)) {
+              selectedLRBitmap = ((BitmapDrawable) lowResImageView5.getDrawable()).getBitmap();
+              selectedImageTextView.setText(
+                  "You are using low resolution image: 5 ("
+                      + getResources().getString(R.string.low_resolution_5)
+                      + ")");
+            } else if (v.equals(lowResImageView6)) {
+              selectedLRBitmap = ((BitmapDrawable) lowResImageView6.getDrawable()).getBitmap();
+              selectedImageTextView.setText(
+                  "You are using low resolution image: 6 ("
+                      + getResources().getString(R.string.low_resolution_6)
                       + ")");
             }
             return false;
