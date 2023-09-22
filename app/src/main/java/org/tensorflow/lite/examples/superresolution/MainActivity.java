@@ -90,13 +90,10 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    //    btnImageSend = findViewById(R.id.btnImageSend);
-
     add_image = findViewById(R.id.add_button);
     add_image.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        // Intent를 통해 이미지를 선택
         Intent intent = new Intent();
 //         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setType("image/*");
@@ -109,23 +106,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(getFile);
       }
     });
-
-
-//    // 비트맵으로 받는 방법
-//    try {
-//      InputStream in = getContentResolver().openInputStream(data.getData());
-//      Bitmap image = BitmapFactory.decodeStream(in);
-//
-//      imgVwSelected.setImageBitmap(image);
-//
-//      in.close();
-//    } catch(IOException ioe) {
-//      ioe.printStackTrace();
-//    }
-//
-//    // URI로 받는 방법
-//    imgVwSelected.setImageURI(data.getData());
-//  }
 
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
