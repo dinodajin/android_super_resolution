@@ -24,6 +24,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
   private ImageView addLowImageView4;
   private Button add_image;
 
+  private Button btn_picture;
+  private ImageView imageView;
+  private static final int REQUEST_IMAGE_CODE=101;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -107,11 +112,24 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
+    imageView = findViewById(R.id.imageView);
+    btn_picture = findViewById(R.id.btn_picture);
+    btn_picture.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent imageTakeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(imageTakeIntent.resolveActivity(getPackageManager()) != null) {
+          startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CODE);
+        }
+      }
+    });
+
+
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
     addLowImageView3 = findViewById(R.id.add_row_image_3);
     addLowImageView4 = findViewById(R.id.add_row_image_4);
-
 
     final Button superResolutionButton = findViewById(R.id.upsample_button);
     lowResImageView1 = findViewById(R.id.low_resolution_image_1);
@@ -221,20 +239,27 @@ public class MainActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-      if (requestCode == 0) {
-        if (resultCode == RESULT_OK) {
-          if (addLowImageView1.getDrawable() == null) {
-            Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView1);
-          } else if (addLowImageView2.getDrawable() == null) {
-            Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView2);
-          } else if (addLowImageView3.getDrawable() == null) {
-            Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView3);
-          } else if (addLowImageView4.getDrawable() == null) {
-            Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView4);
-          } else {
-            showToast("The space is full!");
-          }
+    if (requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK) {
+      Bundle extras = data.getExtras();
+
+      Bitmap imageBitmap = (Bitmap) extras.get("data");
+      imageView.setImageBitmap(imageBitmap);
+    }
+
+    if (requestCode == 0) {
+      if (resultCode == RESULT_OK) {
+        if (addLowImageView1.getDrawable() == null) {
+          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView1);
+        } else if (addLowImageView2.getDrawable() == null) {
+          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView2);
+        } else if (addLowImageView3.getDrawable() == null) {
+          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView3);
+        } else if (addLowImageView4.getDrawable() == null) {
+          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView4);
+        } else {
+          showToast("The space is full!");
         }
+      }
     }
   }
 
