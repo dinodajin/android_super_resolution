@@ -43,6 +43,8 @@ import java.io.InputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import com.bumptech.glide.Glide;
 
@@ -99,32 +101,45 @@ public class MainActivity extends AppCompatActivity {
     add_image.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent();
-//         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 0);
+        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("업로드할 이미지 선택")
+                .setPositiveButton("사진촬영", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent imageTakeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        File fileFile = getFilesDir();
-        String getFile = fileFile.getPath();
-        System.out.println(fileFile);
-        System.out.println(getFile);
+                    if(imageTakeIntent.resolveActivity(getPackageManager()) != null) {
+                      startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CODE);
+                    }
+                  }
+                })
+                .setNeutralButton("앨범선택", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent();
+            //         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, 0);
+
+                    File fileFile = getFilesDir();
+                    String getFile = fileFile.getPath();
+                    System.out.println(fileFile);
+                    System.out.println(getFile);
+                  }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(MainActivity.this, "안 끔", Toast.LENGTH_SHORT).show();
+                  }
+                });
+        AlertDialog msgDlg = msgBuilder.create();
+        msgDlg.show();
       }
     });
 
     imageView = findViewById(R.id.imageView);
-    btn_picture = findViewById(R.id.btn_picture);
-    btn_picture.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent imageTakeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if(imageTakeIntent.resolveActivity(getPackageManager()) != null) {
-          startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CODE);
-        }
-      }
-    });
-
 
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
