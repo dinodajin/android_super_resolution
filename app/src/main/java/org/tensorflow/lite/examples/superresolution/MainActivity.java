@@ -16,13 +16,19 @@
 
 package org.tensorflow.lite.examples.superresolution;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -35,11 +41,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.WorkerThread;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import android.content.Intent;
@@ -91,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
   private Button btn_picture;
   private ImageView imageView;
   private static final int REQUEST_IMAGE_CODE=101;
+  private static final int REQUEST_PERMISSION_CODE=1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +112,13 @@ public class MainActivity extends AppCompatActivity {
     add_image.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+          ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE);
+        }
+
         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("업로드할 이미지 선택")
                 .setPositiveButton("사진촬영", new DialogInterface.OnClickListener() {
@@ -117,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent();
-            //         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    //         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, 0);
@@ -139,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    imageView = findViewById(R.id.imageView);
+    //imageView = findViewById(R.id.imageView);
 
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
@@ -195,59 +213,63 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
               @Override
               public void onClick(View view) {
-                if (selectedLRBitmap == null) {
-                  Toast.makeText(
-                                  getApplicationContext(),
-                                  "Please choose one low resolution image",
-                                  Toast.LENGTH_LONG)
-                          .show();
-                  return;
-                }
-
-                if (superResolutionNativeHandle == 0) {
-                  superResolutionNativeHandle = initTFLiteInterpreter(gpuSwitch.isChecked());
-                } else if (useGPU != gpuSwitch.isChecked()) {
-                  // We need to reinitialize interpreter when execution hardware is changed
-                  deinit();
-                  superResolutionNativeHandle = initTFLiteInterpreter(gpuSwitch.isChecked());
-                }
-                useGPU = gpuSwitch.isChecked();
-                if (superResolutionNativeHandle == 0) {
-                  showToast("TFLite interpreter failed to create!");
-                  return;
-                }
-
-                int[] lowResRGB = new int[LR_IMAGE_HEIGHT * LR_IMAGE_WIDTH];
-                selectedLRBitmap.getPixels(
-                        lowResRGB, 0, LR_IMAGE_WIDTH, 0, 0, LR_IMAGE_WIDTH, LR_IMAGE_HEIGHT);
-
-                final long startTime = SystemClock.uptimeMillis();
-                int[] superResRGB = doSuperResolution(lowResRGB);
-                final long processingTimeMs = SystemClock.uptimeMillis() - startTime;
-                if (superResRGB == null) {
-                  showToast("Super resolution failed!");
-                  return;
-                }
-
-                final LinearLayout resultLayout = findViewById(R.id.result_layout);
-                final ImageView superResolutionImageView = findViewById(R.id.super_resolution_image);
-                final ImageView nativelyScaledImageView = findViewById(R.id.natively_scaled_image);
-                final TextView superResolutionTextView = findViewById(R.id.super_resolution_tv);
-                final TextView nativelyScaledImageTextView =
-                        findViewById(R.id.natively_scaled_image_tv);
-                final TextView logTextView = findViewById(R.id.log_view);
-
-                // Force refreshing the ImageView
-                superResolutionImageView.setImageDrawable(null);
-                Bitmap srImgBitmap =
-                        Bitmap.createBitmap(
-                                superResRGB, SR_IMAGE_WIDTH, SR_IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
-                superResolutionImageView.setImageBitmap(srImgBitmap);
-                nativelyScaledImageView.setImageBitmap(selectedLRBitmap);
-                resultLayout.setVisibility(View.VISIBLE);
-                logTextView.setText("Inference time: " + processingTimeMs + "ms");
+                compareSuperResolution();
               }
             });
+  }
+
+  private void compareSuperResolution() {
+    if (selectedLRBitmap == null) {
+      Toast.makeText(
+                      getApplicationContext(),
+                      "Please choose one low resolution image",
+                      Toast.LENGTH_LONG)
+              .show();
+      return;
+    }
+
+    if (superResolutionNativeHandle == 0) {
+      superResolutionNativeHandle = initTFLiteInterpreter(gpuSwitch.isChecked());
+    } else if (useGPU != gpuSwitch.isChecked()) {
+      // We need to reinitialize interpreter when execution hardware is changed
+      deinit();
+      superResolutionNativeHandle = initTFLiteInterpreter(gpuSwitch.isChecked());
+    }
+    useGPU = gpuSwitch.isChecked();
+    if (superResolutionNativeHandle == 0) {
+      showToast("TFLite interpreter failed to create!");
+      return;
+    }
+
+    int[] lowResRGB = new int[LR_IMAGE_HEIGHT * LR_IMAGE_WIDTH];
+    selectedLRBitmap.getPixels(
+            lowResRGB, 0, LR_IMAGE_WIDTH, 0, 0, LR_IMAGE_WIDTH, LR_IMAGE_HEIGHT);
+
+    final long startTime = SystemClock.uptimeMillis();
+    int[] superResRGB = doSuperResolution(lowResRGB);
+    final long processingTimeMs = SystemClock.uptimeMillis() - startTime;
+    if (superResRGB == null) {
+      showToast("Super resolution failed!");
+      return;
+    }
+
+    final LinearLayout resultLayout = findViewById(R.id.result_layout);
+    final ImageView superResolutionImageView = findViewById(R.id.super_resolution_image);
+    final ImageView nativelyScaledImageView = findViewById(R.id.natively_scaled_image);
+    final TextView superResolutionTextView = findViewById(R.id.super_resolution_tv);
+    final TextView nativelyScaledImageTextView =
+            findViewById(R.id.natively_scaled_image_tv);
+    final TextView logTextView = findViewById(R.id.log_view);
+
+    // Force refreshing the ImageView
+    superResolutionImageView.setImageDrawable(null);
+    Bitmap srImgBitmap =
+            Bitmap.createBitmap(
+                    superResRGB, SR_IMAGE_WIDTH, SR_IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
+    superResolutionImageView.setImageBitmap(srImgBitmap);
+    nativelyScaledImageView.setImageBitmap(selectedLRBitmap);
+    resultLayout.setVisibility(View.VISIBLE);
+    logTextView.setText("Inference time: " + processingTimeMs + "ms");
   }
 
   @Override
@@ -258,23 +280,69 @@ public class MainActivity extends AppCompatActivity {
       Bundle extras = data.getExtras();
 
       Bitmap imageBitmap = (Bitmap) extras.get("data");
-      imageView.setImageBitmap(imageBitmap);
+      int left = imageBitmap.getWidth() / 2 - 25;
+      int top = imageBitmap.getHeight() / 2 - 25;
+      Bitmap croppedBitmap = Bitmap.createBitmap(imageBitmap, left, top, 50, 50);
+
+      selectedLRBitmap = croppedBitmap;
+
+      compareSuperResolution();
+
+      long time = System.currentTimeMillis();
+      saveBitmapToGallery(imageBitmap, String.valueOf(time));
+      //imageView.setImageBitmap(croppedBitmap);
     }
 
     if (requestCode == 0) {
       if (resultCode == RESULT_OK) {
         if (addLowImageView1.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView1);
+          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView1);
         } else if (addLowImageView2.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView2);
+          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView2);
         } else if (addLowImageView3.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView3);
+          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView3);
         } else if (addLowImageView4.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).into(addLowImageView4);
+          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView4);
         } else {
           showToast("The space is full!");
         }
       }
+    }
+  }
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    switch (requestCode) {
+      case REQUEST_PERMISSION_CODE: {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+          Toast.makeText(this, "WRITE_EXTERNAL_STORAGE 권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+      }
+    }
+  }
+  private void saveBitmapToGallery(Bitmap bitmap, String fileName) {
+    OutputStream outputStream;
+    try {
+      File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+      if (!directory.exists()) {
+        directory.mkdirs();
+      }
+
+      File file = new File(directory, fileName + ".jpg");
+      outputStream = new FileOutputStream(file);
+      bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+      outputStream.flush();
+      outputStream.close();
+
+      Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+      Uri contentUri = Uri.fromFile(file);
+      mediaScanIntent.setData(contentUri);
+      this.sendBroadcast(mediaScanIntent);
+    } catch (IOException e) {
+      Log.e("@@@@@", "======> " + e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -286,73 +354,73 @@ public class MainActivity extends AppCompatActivity {
 
   private void setLRImageViewListener(ImageView iv) {
     iv.setOnTouchListener(
-        new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            if (v.equals(lowResImageView1)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView1.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 1 ("
-                      + getResources().getString(R.string.low_resolution_1)
-                      + ")");
-            } else if (v.equals(lowResImageView2)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView2.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 2 ("
-                      + getResources().getString(R.string.low_resolution_2)
-                      + ")");
-            } else if (v.equals(lowResImageView3)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView3.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 3 ("
-                      + getResources().getString(R.string.low_resolution_3)
-                      + ")");
-            } else if (v.equals(lowResImageView4)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView4.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 4 ("
-                      + getResources().getString(R.string.low_resolution_4)
-                      + ")");
-            } else if (v.equals(lowResImageView5)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView5.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 5 ("
-                      + getResources().getString(R.string.low_resolution_5)
-                      + ")");
-            } else if (v.equals(lowResImageView6)) {
-              selectedLRBitmap = ((BitmapDrawable) lowResImageView6.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                  "You are using low resolution image: 6 ("
-                      + getResources().getString(R.string.low_resolution_6)
-                      + ")");
-            } else if (v.equals(addLowImageView1)) {
-              selectedLRBitmap = ((BitmapDrawable) addLowImageView1.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                      "You are using low resolution image: 7 ("
-                              + getResources().getString(R.string.add_img_1)
-                              + ")");
-            } else if (v.equals(addLowImageView2)) {
-              selectedLRBitmap = ((BitmapDrawable) addLowImageView2.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                      "You are using low resolution image: 8 ("
-                              + getResources().getString(R.string.add_img_2)
-                              + ")");
-            } else if (v.equals(addLowImageView3)) {
-              selectedLRBitmap = ((BitmapDrawable) addLowImageView3.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                      "You are using low resolution image: 9 ("
-                              + getResources().getString(R.string.add_img_3)
-                              + ")");
-            } else if (v.equals(addLowImageView4)) {
-              selectedLRBitmap = ((BitmapDrawable) addLowImageView4.getDrawable()).getBitmap();
-              selectedImageTextView.setText(
-                      "You are using low resolution image: 10 ("
-                              + getResources().getString(R.string.add_img_4)
-                              + ")");
-            }
-            return false;
-          }
-        });
+            new View.OnTouchListener() {
+              @Override
+              public boolean onTouch(View v, MotionEvent event) {
+                if (v.equals(lowResImageView1)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView1.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 1 ("
+                                  + getResources().getString(R.string.low_resolution_1)
+                                  + ")");
+                } else if (v.equals(lowResImageView2)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView2.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 2 ("
+                                  + getResources().getString(R.string.low_resolution_2)
+                                  + ")");
+                } else if (v.equals(lowResImageView3)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView3.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 3 ("
+                                  + getResources().getString(R.string.low_resolution_3)
+                                  + ")");
+                } else if (v.equals(lowResImageView4)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView4.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 4 ("
+                                  + getResources().getString(R.string.low_resolution_4)
+                                  + ")");
+                } else if (v.equals(lowResImageView5)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView5.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 5 ("
+                                  + getResources().getString(R.string.low_resolution_5)
+                                  + ")");
+                } else if (v.equals(lowResImageView6)) {
+                  selectedLRBitmap = ((BitmapDrawable) lowResImageView6.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 6 ("
+                                  + getResources().getString(R.string.low_resolution_6)
+                                  + ")");
+                } else if (v.equals(addLowImageView1)) {
+                  selectedLRBitmap = ((BitmapDrawable) addLowImageView1.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 7 ("
+                                  + getResources().getString(R.string.add_img_1)
+                                  + ")");
+                } else if (v.equals(addLowImageView2)) {
+                  selectedLRBitmap = ((BitmapDrawable) addLowImageView2.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 8 ("
+                                  + getResources().getString(R.string.add_img_2)
+                                  + ")");
+                } else if (v.equals(addLowImageView3)) {
+                  selectedLRBitmap = ((BitmapDrawable) addLowImageView3.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 9 ("
+                                  + getResources().getString(R.string.add_img_3)
+                                  + ")");
+                } else if (v.equals(addLowImageView4)) {
+                  selectedLRBitmap = ((BitmapDrawable) addLowImageView4.getDrawable()).getBitmap();
+                  selectedImageTextView.setText(
+                          "You are using low resolution image: 10 ("
+                                  + getResources().getString(R.string.add_img_4)
+                                  + ")");
+                }
+                return false;
+              }
+            });
   }
 
   @WorkerThread
@@ -362,8 +430,8 @@ public class MainActivity extends AppCompatActivity {
 
   private MappedByteBuffer loadModelFile() throws IOException {
     try (AssetFileDescriptor fileDescriptor =
-            AssetsUtil.getAssetFileDescriptorOrCached(getApplicationContext(), MODEL_NAME);
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor())) {
+                 AssetsUtil.getAssetFileDescriptorOrCached(getApplicationContext(), MODEL_NAME);
+         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor())) {
       FileChannel fileChannel = inputStream.getChannel();
       long startOffset = fileDescriptor.getStartOffset();
       long declaredLength = fileDescriptor.getDeclaredLength();
