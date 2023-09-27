@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent();
-                    //         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, 0);
@@ -156,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
         msgDlg.show();
       }
     });
-
-    //imageView = findViewById(R.id.imageView);
 
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
@@ -289,7 +286,6 @@ public class MainActivity extends AppCompatActivity {
 
       long time = System.currentTimeMillis();
       saveBitmapToGallery(imageBitmap, String.valueOf(time));
-      //imageView.setImageBitmap(croppedBitmap);
     }
 
     if (requestCode == 0) {
