@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name" translatable="false">TFL Super Resolution</string>
     <string name="choose_image" translatable="false">Choose a low resolution image below:</string>
+    <string name="add_image" translatable="false">+</string>
+    <string name="btnImageSend" translatable="false">send</string>
     <string name="low_resolution_1" translatable="false">insect head</string>
     <string name="low_resolution_2" translatable="false">lights 1</string>
     <string name="low_resolution_3" translatable="false">cat ear</string>
     <string name="low_resolution_4" translatable="false">vegetables</string>
     <string name="low_resolution_5" translatable="false">sight</string>
     <string name="low_resolution_6" translatable="false">lights 2</string>
+    <string name="add_img_1" translatable="false">first image</string>
+    <string name="add_img_2" translatable="false">second image</string>
+    <string name="add_img_3" translatable="false">third image</string>
+    <string name="add_img_4" translatable="false">forth image</string>
     <string name="chosen_image_text" translatable="false">You are using low resolution image: None.</string>
     <string name="simple_explanation" translatable="false">(Clicking UPSAMPLE button below will use TFLite to generate a corresponding high resolution image based on your chosen image.)</string>
     <string name="super_resolution_image" translatable="false">Super resolution image:</string>

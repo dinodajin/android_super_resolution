@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'de.undercouch.download'
 
+
 android {
     compileSdkVersion 28
 
@@ -68,5 +69,14 @@ apply from: 'download.gradle'
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.guava:guava:30.0-android'
-    implementation 'com.android.support:design:23.0.1'
+    implementation 'com.android.support:design:28.0.0'
+
+
+    //glide 라이브러리 추가 - ref. https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //crop 라이브러리 추가
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+
 }

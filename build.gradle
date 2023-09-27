@@ -5,11 +5,12 @@ buildscript {
 
     repositories {
         google()
-        mavenCentral()
+        jcenter()
+        maven { url "https://jitpack.io" }
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.1'
         classpath 'de.undercouch:gradle-download-task:4.1.1'
     }
 }
@@ -18,6 +19,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
         maven {
             name 'ossrh-snapshot'
             url 'https://oss.sonatype.org/content/repositories/snapshots'
