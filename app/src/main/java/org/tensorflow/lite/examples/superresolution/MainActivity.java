@@ -280,9 +280,8 @@ public class MainActivity extends AppCompatActivity {
       Bundle extras = data.getExtras();
 
       Bitmap imageBitmap = (Bitmap) extras.get("data");
-      int left = imageBitmap.getWidth() / 2 - 25;
-      int top = imageBitmap.getHeight() / 2 - 25;
-      Bitmap croppedBitmap = Bitmap.createBitmap(imageBitmap, left, top, 50, 50);
+
+      Bitmap croppedBitmap = getCroppedBitmap(imageBitmap);
 
       selectedLRBitmap = croppedBitmap;
 
@@ -295,19 +294,34 @@ public class MainActivity extends AppCompatActivity {
 
     if (requestCode == 0) {
       if (resultCode == RESULT_OK) {
-        if (addLowImageView1.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView1);
-        } else if (addLowImageView2.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView2);
-        } else if (addLowImageView3.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView3);
-        } else if (addLowImageView4.getDrawable() == null) {
-          Glide.with(getApplicationContext()).load(data.getData()).override(50, 50).centerCrop().into(addLowImageView4);
-        } else {
-          showToast("The space is full!");
+
+        Uri selectedImageUri = data.getData();
+        try {
+          Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+
+          Bitmap croppedBitmap = getCroppedBitmap(bitmap);
+
+          if (addLowImageView1.getDrawable() == null) {
+            addLowImageView1.setImageBitmap(croppedBitmap);
+          } else if (addLowImageView2.getDrawable() == null) {
+            addLowImageView2.setImageBitmap(croppedBitmap);
+          } else if (addLowImageView3.getDrawable() == null) {
+            addLowImageView3.setImageBitmap(croppedBitmap);
+          } else if (addLowImageView4.getDrawable() == null) {
+            addLowImageView4.setImageBitmap(croppedBitmap);
+          } else {
+            showToast("The space is full!");
+          }
+        } catch (IOException e) {
+          throw new RuntimeException(e);
         }
       }
     }
+  }
+  private Bitmap getCroppedBitmap(Bitmap bitmap) {
+    int left = bitmap.getWidth() / 2 - 25;
+    int top = bitmap.getHeight() / 2 - 25;
+    return Bitmap.createBitmap(bitmap, left, top, 50, 50);
   }
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
