@@ -17,6 +17,7 @@
 package org.tensorflow.lite.examples.superresolution;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -24,6 +25,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
   private Button add_image;
   private VideoView testVideo;
+  private ImageView thumbnailIv;
 
   private Button btn_picture;
   private ImageView imageView;
@@ -274,35 +278,16 @@ public class MainActivity extends AppCompatActivity {
     super.onActivityResult(requestCode, resultCode, data);
 
     if (requestCode == REQUEST_VIDEO_CODE && resultCode == RESULT_OK) {
-      Bundle extras = data.getExtras();
-
-      Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-      Bitmap croppedBitmap = getCroppedBitmap(imageBitmap);
-
-      selectedLRBitmap = croppedBitmap;
-
-      compareSuperResolution();
-
-      long time = System.currentTimeMillis();
-      saveBitmapToGallery(imageBitmap, String.valueOf(time));
+      Uri videoUri = data.getData();
+      testVideo.setVideoURI(videoUri);
+      testVideo.start();
     }
 
     if (requestCode == 0) {
       if (resultCode == RESULT_OK) {
-
-        Uri selectedImageUri = data.getData();
-        try {
-          Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-
-          Bitmap croppedBitmap = getCroppedBitmap(bitmap);
-
-//          else {
-//            showToast("The space is full!");
-//          }
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
+        Uri videoUri = data.getData();
+        testVideo.setVideoURI(videoUri);
+        testVideo.start();
       }
     }
   }
@@ -310,6 +295,23 @@ public class MainActivity extends AppCompatActivity {
     int left = bitmap.getWidth() / 2 - 25;
     int top = bitmap.getHeight() / 2 - 25;
     return Bitmap.createBitmap(bitmap, left, top, 50, 50);
+  }
+
+  private static Bitmap createThumbnail(Context activity, String path) {
+    MediaMetadataRetriever mediaMetadataRetriever = null;
+    Bitmap bitmap = null;
+    try {
+      mediaMetadataRetriever = new MediaMetadataRetriever();
+      mediaMetadataRetriever.setDataSource(activity,Uri.parse(path));
+      bitmap = mediaMetadataRetriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if(mediaMetadataRetriever != null) {
+        mediaMetadataRetriever.release();
+      }
+    }
+    return bitmap;
   }
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
