@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     add_image = findViewById(R.id.add_button);
+    testVideo = findViewById(R.id.testVideo);
     add_image.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -159,11 +160,6 @@ public class MainActivity extends AppCompatActivity {
         msgDlg.show();
       }
     });
-    testVideo = findViewById(R.id.testVideo);
-    Resources res = getResources();
-    Uri uri = Uri.parse("https://ykarr.github.io/web/test.mp4");
-    testVideo.setVideoURI(uri);
-    testVideo.start();
 
     final Button superResolutionButton = findViewById(R.id.upsample_button);
     lowResImageView1 = findViewById(R.id.low_resolution_image_1);
