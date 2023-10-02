@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
   private Button btn_picture;
   private ImageView imageView;
-  private static final int REQUEST_IMAGE_CODE=101;
+  private static final int REQUEST_VIDEO_CODE=101;
   private static final int REQUEST_PERMISSION_CODE=1;
 
   @Override
@@ -124,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("업로드할 이미지 선택")
-                .setPositiveButton("사진촬영", new DialogInterface.OnClickListener() {
+                .setPositiveButton("동영상 촬영", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent imageTakeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent videoTakeIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
-                    if(imageTakeIntent.resolveActivity(getPackageManager()) != null) {
-                      startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CODE);
+                    if(videoTakeIntent.resolveActivity(getPackageManager()) != null) {
+                      startActivityForResult(videoTakeIntent,REQUEST_VIDEO_CODE);
                     }
                   }
                 })
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK) {
+    if (requestCode == REQUEST_VIDEO_CODE && resultCode == RESULT_OK) {
       Bundle extras = data.getExtras();
 
       Bitmap imageBitmap = (Bitmap) extras.get("data");
