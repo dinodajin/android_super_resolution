@@ -154,6 +154,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/upsample" />
 
+                <VideoView
+                    android:id="@+id/testVideo"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp" />
+
+                <ImageView
+                    android:id="@+id/videoImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
+
+<!--                <Button-->
+<!--                    android:id="@+id/video_select_btn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content" />-->
+
                 <LinearLayout
                     android:id="@+id/result_layout"
                     android:layout_width="wrap_content"

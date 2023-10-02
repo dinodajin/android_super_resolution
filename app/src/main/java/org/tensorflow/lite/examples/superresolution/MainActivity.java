@@ -20,6 +20,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -55,6 +56,7 @@ import java.nio.channels.FileChannel;
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
   private ImageView addLowImageView3;
   private ImageView addLowImageView4;
   private Button add_image;
+  private VideoView testVideo;
 
   private Button btn_picture;
   private ImageView imageView;
@@ -155,6 +158,11 @@ public class MainActivity extends AppCompatActivity {
         msgDlg.show();
       }
     });
+    testVideo = findViewById(R.id.testVideo);
+    Resources res = getResources();
+    Uri uri = Uri.parse("https://ykarr.github.io/web/test.mp4");
+    testVideo.setVideoURI(uri);
+    testVideo.start();
 
     addLowImageView1 = findViewById(R.id.add_row_image_1);
     addLowImageView2 = findViewById(R.id.add_row_image_2);
