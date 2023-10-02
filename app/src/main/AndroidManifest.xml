@@ -3,6 +3,10 @@
     <uses-sdk />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 외부 URL로부터 동영상을 스트리밍하기 위한 권한. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 재생중 화면 어두워짐, 잠김 방지하기 위한 권한. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2" />
 

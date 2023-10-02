@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent();
-                    intent.setType("video/*");
+                    intent.setType("image/* video/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, 0);
 
@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
     if (requestCode == REQUEST_VIDEO_CODE && resultCode == RESULT_OK) {
       Uri videoUri = data.getData();
       testVideo.setVideoURI(videoUri);
+      createThumbnail(this, videoUri.toString());
       testVideo.start();
     }
 
@@ -283,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
       if (resultCode == RESULT_OK) {
         Uri videoUri = data.getData();
         testVideo.setVideoURI(videoUri);
+        createThumbnail(this, videoUri.toString());
         testVideo.start();
       }
     }
@@ -293,14 +295,29 @@ public class MainActivity extends AppCompatActivity {
     return Bitmap.createBitmap(bitmap, left, top, 50, 50);
   }
 
-  private static Bitmap createThumbnail(Context activity, String path) {
+  private Bitmap createThumbnail(Context activity, String path) {
     MediaMetadataRetriever mediaMetadataRetriever = null;
     Bitmap bitmap = null;
     try {
-      mediaMetadataRetriever = new MediaMetadataRetriever();
-      mediaMetadataRetriever.setDataSource(activity,Uri.parse(path));
-      bitmap = mediaMetadataRetriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-    } catch (Exception e) {
+
+        mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(activity, Uri.parse(path));
+
+        String playtime = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInmillisec = Long.parseLong( playtime );
+        long duration = timeInmillisec / 1000;
+        long hours = duration / 3600;
+        long minutes = (duration - hours * 3600) / 60;
+        long seconds = duration - (hours * 3600 + minutes * 60);
+      for (int i = 0; i < seconds; i++) {
+        bitmap = mediaMetadataRetriever.getFrameAtTime(1000000 + i * 1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+        long time = System.currentTimeMillis();
+        saveBitmapToGallery(bitmap, String.valueOf(time));
+      }
+//      compareSuperResolution();
+
+//      thumbnailIv.setImageBitmap(bitmap);
+    }catch (Exception e) {
       e.printStackTrace();
     } finally {
       if(mediaMetadataRetriever != null) {
