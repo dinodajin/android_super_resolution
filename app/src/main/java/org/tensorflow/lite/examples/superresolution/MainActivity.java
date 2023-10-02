@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("업로드할 이미지 선택")
+                .setTitle("업로드할 동영상 선택")
                 .setPositiveButton("동영상 촬영", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
