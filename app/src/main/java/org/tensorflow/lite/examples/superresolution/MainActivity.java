@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     add_image = findViewById(R.id.add_button);
     testVideo = findViewById(R.id.testVideo);
+
+    //업로드할 동영상 선택 (촬영 및 앨범에서 선택)
     add_image.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent();
-                    intent.setType("image/* video/*");
+                    intent.setType("video/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, 0);
 
@@ -206,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
       setLRImageViewListener(iv);
     }
 
+    //UPSAMPLE 버튼 클릭
     superResolutionButton.setOnClickListener(
             new View.OnClickListener() {
               @Override
@@ -215,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
             });
   }
 
+
+  //super resolution
   private void compareSuperResolution() {
     if (selectedLRBitmap == null) {
       Toast.makeText(
@@ -273,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
+    //카메라로 촬영한 비디오
     if (requestCode == REQUEST_VIDEO_CODE && resultCode == RESULT_OK) {
       Uri videoUri = data.getData();
       testVideo.setVideoURI(videoUri);
@@ -280,6 +286,8 @@ public class MainActivity extends AppCompatActivity {
       testVideo.start();
     }
 
+
+    //앨범에서 선택한 비디오
     if (requestCode == 0) {
       if (resultCode == RESULT_OK) {
         Uri videoUri = data.getData();
@@ -289,12 +297,15 @@ public class MainActivity extends AppCompatActivity {
       }
     }
   }
+
+  //이미지 크롭
   private Bitmap getCroppedBitmap(Bitmap bitmap) {
     int left = bitmap.getWidth() / 2 - 25;
     int top = bitmap.getHeight() / 2 - 25;
     return Bitmap.createBitmap(bitmap, left, top, 50, 50);
   }
 
+  //동영상에서 프레임 추출
   private Bitmap createThumbnail(Context activity, String path) {
     MediaMetadataRetriever mediaMetadataRetriever = null;
     Bitmap bitmap = null;
@@ -326,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
     }
     return bitmap;
   }
+  //권한 체크
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     switch (requestCode) {
@@ -338,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
       }
     }
   }
+  //카메라로 촬영한 이미지 앨범에 저장
   private void saveBitmapToGallery(Bitmap bitmap, String fileName) {
     OutputStream outputStream;
     try {
